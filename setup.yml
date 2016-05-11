@@ -1,0 +1,39 @@
+#!/usr/bin/env ansible-playbook
+# vim:ft=ansible :
+
+---
+- name: Run playbook => nginx-demo/setup.yml
+  hosts: all
+  roles:
+    - chusiang.vim-and-vi-mode
+  vars:
+    nginx_index_title: "chusiang@kalug1605"
+  tasks:
+    - name: update apt repo cache
+      apt: name=nginx update_cache=yes
+
+    - name: install nginx with apt
+      apt: name=nginx state=present
+
+    - name: modify index.html
+      template: >
+        src=templates/index.html.j2
+        dest=/var/www/html/index.html
+        owner=root
+        group=www-data
+        mode="644"
+
+    - name: check nginx process
+      shell: "ps -A | grep 'nginx'"
+      register: nginx_process
+
+    - name: review http state
+      shell: "curl -s http://localhost"
+      register: http_state
+
+    - name: print nginx process
+      debug: msg={{ nginx_process.stdout_lines }}
+
+    - name: print http state
+      debug: msg={{ http_state.stdout_lines }}
+
