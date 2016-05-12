@@ -2,27 +2,38 @@
 # vim:ft=ansible :
 
 ---
-- name: Run playbook => nginx-demo/setup.yml
+- name: Run playbook => kalug1605-ansible-demo/setup.yml
   hosts: all
+  become: yes                           # use sudo mode
+
+  # run roles, you can find more with ansible-galaxy.
   roles:
-    - chusiang.vim-and-vi-mode
+    - chusiang.vim-and-vi-mode          # option
+
   vars:
-    nginx_index_title: "chusiang@kalug1605"
+    username: "chusiang"
+    mail: "chusiang.lai (at) gmail.com"
+    blog: "http://note.drx.tw"
+
   tasks:
+    # like 'apt-get update' command.
     - name: update apt repo cache
       apt: name=nginx update_cache=yes
 
+    # like 'apt-get install nginx' command..
     - name: install nginx with apt
       apt: name=nginx state=present
 
+    # deploy index.html to DocumentRoot.
     - name: modify index.html
       template: >
         src=templates/index.html.j2
         dest=/var/www/html/index.html
-        owner=root
+        owner=www-data
         group=www-data
         mode="644"
 
+    # check web service state
     - name: check nginx process
       shell: "ps -A | grep 'nginx'"
       register: nginx_process
@@ -31,6 +42,7 @@
       shell: "curl -s http://localhost"
       register: http_state
 
+    # print vars stdout.
     - name: print nginx process
       debug: msg={{ nginx_process.stdout_lines }}
 

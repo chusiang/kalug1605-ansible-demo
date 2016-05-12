@@ -2,27 +2,32 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>{{ nginx_index_title }}</title>
+    <title>KaLUG 1605 demo</title>
   </head>
+  <style type="text/css" media="all">
+    body {
+      font-size: x-large;
+    }
+  </style>
   <body>
-    <h1>{{ nginx_index_title }}</h1>
-
     <p>
-<pre> _____________________________________
+<pre>[ {{ username }}@kalug ~ ]$ hostname
+kalug.linux.org.tw
+[ {{ username }}@kalug ~ ]$ cowsay $MESSAGE
+ _____________________________________
 / This is a ansible-playbook demo for \
-\ KaLUG 1605.                         /
+\ KaLUG meetup at 2016/05/28.         /
  -------------------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
                 ||----w |
-                ||     ||</pre>
-    </p>
-
-    <p>
-<pre>[ chusiang@nginx-demo.local ~ ]$ cat ~/.profile
-- Author: chusiang
-- Blog: http://note.drx.tw</pre>
+                ||     ||
+[ {{ username }}@kalug ~ ]$
+[ {{ username }}@kalug ~ ]$
+[ {{ username }}@kalug ~ ]$ cat .profile
+- {{ mail }}
+- {{ blog }}</pre>
     </p>
   </body>
 </html>
