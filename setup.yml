@@ -6,8 +6,12 @@
   hosts: all
   roles:
     - chusiang.vim-and-vi-mode
+
   vars:
-    nginx_index_title: "chusiang@kalug1605"
+    username: "chusiang"
+    mail: "chusiang.lai (at) gmail.com"
+    blog: "http://note.drx.tw"
+
   tasks:
     - name: update apt repo cache
       apt: name=nginx update_cache=yes
