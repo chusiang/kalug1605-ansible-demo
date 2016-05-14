@@ -1,0 +1,19 @@
+---
+
+- name: This is a Playbook test
+  hosts: all
+  tasks:
+    - name: Hello World
+      command: echo "Hello World"
+    
+    - name: Install Vim & Emacs
+      become: yes
+      apt: name={{ item }} state=present
+      with_items:
+        - vim
+        - emacs
+    
+    - name: use vi-mode in readline
+      become: yes
+      lineinfile: dest=/etc/inputrc line="set editing-mode vi"
+
