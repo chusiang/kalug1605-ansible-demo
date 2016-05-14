@@ -45,18 +45,25 @@
         owner=www-data
         group=www-data
         mode="644"
+      notify: restart nginx
 
     # (security) 關閉 server_tokens。
-    - name: (security) turn server_tokens off
+    - name: turn server_tokens off
       lineinfile: >
         dest=/etc/nginx/nginx.conf
-        regexp='# server_tokens off;' line='        server_tokens off;'
-      register: restart nginx
+        regexp="# server_tokens off;" line="        server_tokens off;"
+      notify: restart nginx
 
+  # handlers 
+  #
+  # * 當確認事件有被觸發才會動作。
+  # * 1 個 handler 可被多個 task 註冊，並於 tasks 跑完才會作用。
+  #
   handlers:
+    # 執行 'sudo service nginx restart' 指令。
     - name: restart nginx
+      become: yes
       service: name=nginx enabled=yes state=restarted
-      
 
 #
 # Play 2
@@ -66,7 +73,7 @@
 
   # 角色 (Roles)
   #
-  # * Roles 可說是為了特定需求而封包好的 vars, tasks, handles 集合體，以下為快速
+  # * Roles 可說是為了特定需求而封包好的 vars, tasks, handlers 集合體，以下為快速
   #   部署 Vim 和 vi-mode 的 role。
   # * 在 ansible-galaxy 可以找到各式各樣由社群維護的 roles，善加利用即可簡化並縮
   #   短開發時間。
@@ -75,7 +82,7 @@
     - chusiang.vim-and-vi-mode          # option
 
   tasks:
-    # 檢查網頁伺服器之行程。
+    # 檢查網頁伺服器行程。
     - name: check nginx process
       shell: "ps -A | grep 'nginx'"
       register: nginx_process
@@ -91,5 +98,4 @@
 
     - name: print http state
       debug: msg={{ http_state.stdout_lines }}
-
 
