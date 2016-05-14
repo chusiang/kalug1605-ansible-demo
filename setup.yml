@@ -1,30 +1,43 @@
 #!/usr/bin/env ansible-playbook
 # vim:ft=ansible :
 
+# Ansible Playbook
+#
+# * Ansible Playbook 使用 YAML 格式。
+# * 一個 Playbook 可以有多個 Play，且一個 Play 可以有多個 tasks。
+# 
+
 ---
-- name: Run playbook => kalug1605-ansible-demo/setup.yml
-  hosts: all
-  become: yes                           # use sudo mode
 
-  # run roles, you can find more with ansible-galaxy.
-  roles:
-    - chusiang.vim-and-vi-mode          # option
+#
+# Play 1
+#
+- name: Run play 1 => Deploy Nginx.
+  hosts: all                            # 允許所有受管機器執行。
+  become: yes                           # 啟用 sudo 模式。
 
+  # 變數 (Variables)
+  #
+  # * 可替換 task, template … 的值，此例是用來替換 index.html 裡的字串。
+  # * 可用來進行條件判斷。 
+  #
   vars:
     username: "chusiang"
     mail: "chusiang.lai (at) gmail.com"
     blog: "http://note.drx.tw"
 
+  # 主程式 (Main)
+  #
   tasks:
-    # like 'apt-get update' command.
+    # 執行 'apt-get update' 指令。
     - name: update apt repo cache
       apt: name=nginx update_cache=yes
 
-    # like 'apt-get install nginx' command..
+    # 執行 'apt-get install nginx' 指令。
     - name: install nginx with apt
       apt: name=nginx state=present
 
-    # deploy index.html to DocumentRoot.
+    # 於網頁根目錄 (DocumentRoot) 編輯 index.html。
     - name: modify index.html
       template: >
         src=templates/index.html.j2
@@ -33,19 +46,50 @@
         group=www-data
         mode="644"
 
-    # check web service state
+    # (security) 關閉 server_tokens。
+    - name: (security) turn server_tokens off
+      lineinfile: >
+        dest=/etc/nginx/nginx.conf
+        regexp='# server_tokens off;' line='        server_tokens off;'
+      register: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx enabled=yes state=restarted
+      
+
+#
+# Play 2
+#
+- name: Run play 2 => Check state.
+  hosts: all                            # 允許所有受管機器執行。
+
+  # 角色 (Roles)
+  #
+  # * Roles 可說是為了特定需求而封包好的 vars, tasks, handles 集合體，以下為快速
+  #   部署 Vim 和 vi-mode 的 role。
+  # * 在 ansible-galaxy 可以找到各式各樣由社群維護的 roles，善加利用即可簡化並縮
+  #   短開發時間。
+  #
+  roles:
+    - chusiang.vim-and-vi-mode          # option
+
+  tasks:
+    # 檢查網頁伺服器之行程。
     - name: check nginx process
       shell: "ps -A | grep 'nginx'"
       register: nginx_process
 
+    # 檢查網頁內容。
     - name: review http state
       shell: "curl -s http://localhost"
       register: http_state
 
-    # print vars stdout.
+    # 印出檢查結果。
     - name: print nginx process
       debug: msg={{ nginx_process.stdout_lines }}
 
     - name: print http state
       debug: msg={{ http_state.stdout_lines }}
+
 
