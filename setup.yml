@@ -1,5 +1,6 @@
 #!/usr/bin/env ansible-playbook
 # vim:ft=ansible :
+---
 
 # Ansible Playbook
 #
@@ -7,11 +8,9 @@
 # * 一個 Playbook 可以有多個 Play，且一個 Play 可以有多個 tasks。
 # 
 
----
-
-#
 # Play 1
-#
+#########
+
 - name: Run play 1 => Deploy Nginx.
   hosts: all                            # 允許所有受管機器執行。
   become: yes                           # 啟用 sudo 模式。
@@ -26,7 +25,7 @@
     mail: "chusiang.lai (at) gmail.com"
     blog: "http://note.drx.tw"
 
-  # 主程式 (Main)
+    # 主程式 (Main)
   #
   tasks:
     # 執行 'apt-get update' 指令。
@@ -49,15 +48,19 @@
 
     # (security) 關閉 server_tokens。
     - name: turn server_tokens off
+      # 移除 server_tokens 前的 '#' 字元。
       lineinfile: >
         dest=/etc/nginx/nginx.conf
-        regexp="# server_tokens off;" line="        server_tokens off;"
+        regexp="server_tokens off;"
+        insertafter="# server_tokens off;"
+        line="server_tokens off;"
+        state=present
       notify: restart nginx
 
   # handlers 
   #
   # * 當確認事件有被觸發才會動作。
-  # * 1 個 handler 可被多個 task 註冊，並於 tasks 跑完才會作用。
+  # * 1 個 handler 可被多個 task 通知 (notify)，並於 tasks 跑完才會執行。
   #
   handlers:
     # 執行 'sudo service nginx restart' 指令。
@@ -65,9 +68,10 @@
       become: yes
       service: name=nginx enabled=yes state=restarted
 
-#
+
 # Play 2
-#
+#########
+
 - name: Run play 2 => Check state.
   hosts: all                            # 允許所有受管機器執行。
 
@@ -79,7 +83,7 @@
   #   短開發時間。
   #
   roles:
-    - chusiang.vim-and-vi-mode          # option
+    - chusiang.vim-and-vi-mode
 
   tasks:
     # 檢查網頁伺服器行程。
@@ -89,8 +93,13 @@
 
     # 檢查網頁內容。
     - name: review http state
-      shell: "curl -s http://localhost"
+      command: "curl -s http://localhost"
       register: http_state
+
+    # Note:
+    #
+    #  我們可以使用 command 與 shell module 來跑 shell command 的指令，差別在於
+    #  shell module 支援 '|', '&&', '||' 等較複雜的應用。 
 
     # 印出檢查結果。
     - name: print nginx process
