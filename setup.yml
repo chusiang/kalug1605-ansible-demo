@@ -90,8 +90,9 @@
   # * 在 ansible-galaxy 可以找到各式各樣由社群維護的 roles，善加利用即可簡化並縮
   #   短開發時間。
   #
-  #roles:
-  #  - chusiang.vim-and-vi-mode
+  roles:
+    - chusiang.switch-apt-mirror
+    - chusiang.vim-and-vi-mode
 
   tasks:
     # 檢查網頁伺服器行程。
