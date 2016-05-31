@@ -1,5 +1,13 @@
 #!/usr/bin/env ansible-playbook
 # vim:ft=ansible :
+# ============================================================
+#  Author: chusiang / chusiang.lai (at) gmail.com
+#  Blog: http://note.drx.tw
+#  Filename: setup.yml
+#  Modified: 2016-05-15 01:28
+#  Description: Ansible Playbook fire demo for KaLUG 1605.
+# =========================================================== 
+
 ---
 
 # Ansible Playbook
@@ -25,7 +33,7 @@
     mail: "chusiang.lai (at) gmail.com"
     blog: "http://note.drx.tw"
 
-    # 主程式 (Main)
+  # 主程式 (Main)
   #
   tasks:
     # 執行 'apt-get update' 指令。
@@ -83,6 +91,7 @@
   #   短開發時間。
   #
   roles:
+    - chusiang.switch-apt-mirror
     - chusiang.vim-and-vi-mode
 
   tasks:

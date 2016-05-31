@@ -1,6 +1,6 @@
 ---
 
-- name: This is a Playbook test
+- name: This is a Super-basic playbook.
   hosts: all
   tasks:
     - name: Hello World
@@ -13,7 +13,10 @@
         - vim
         - emacs
     
+    # 去去，emacs 走。
     - name: use vi-mode in readline
       become: yes
       lineinfile: dest=/etc/inputrc line="set editing-mode vi"
+
+# vim:ft=ansible :
 
