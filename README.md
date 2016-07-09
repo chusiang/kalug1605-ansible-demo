@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/chusiang/kalug1605-ansible-demo.svg?branch=master)](https://travis-ci.org/chusiang/kalug1605-ansible-demo)
 
-This is a ansible-playbook demo for KaLUG meetup at 2016/05/28.
+This is an ansible-playbook demo for KaLUG meetup at 2016/05/28.
 
 * [Demo video](https://youtu.be/L4UDVP1lJQQ)
 * [現代 IT 人一定要知道的 Ansible 自動化組態技巧 | 凍仁的筆記](http://note.drx.tw/2016/05/automate-with-ansible-basic.html)
