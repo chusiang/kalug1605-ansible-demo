@@ -4,9 +4,6 @@
 
 This is an ansible-playbook demo for KaLUG meetup at 2016/05/28.
 
-* [Demo video](https://youtu.be/L4UDVP1lJQQ)
-* [現代 IT 人一定要知道的 Ansible 自動化組態技巧 | 凍仁的筆記](http://note.drx.tw/2016/05/automate-with-ansible-basic.html)
-
 ## Requirements
 
 * [chusiang.switch-apt-mirror](https://galaxy.ansible.com/chusiang/switch-apt-mirror) (option)
@@ -21,6 +18,12 @@ This is an ansible-playbook demo for KaLUG meetup at 2016/05/28.
 ## Dependencies
 
 None.
+
+## Reference
+
+* [現代 IT 人一定要知道的 Ansible 自動化組態技巧 | 凍仁的筆記](http://note.drx.tw/2016/05/automate-with-ansible-basic.html)
+* [現代 IT 人一定要知道的 Ansible 自動化組態技巧 (42:32) | YouTube](https://youtu.be/pDrKNa53lcE)
+* [Ansible Playbook Demo (3:50) | YouTube](https://youtu.be/L4UDVP1lJQQ)
 
 ## License
 
