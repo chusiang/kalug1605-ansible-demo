@@ -48,7 +48,7 @@
     - name: modify index.html
       template: >
         src=templates/index.html.j2
-        dest=/var/www/html/index.html
+        dest=/usr/share/nginx/html/index.html
         owner=www-data
         group=www-data
         mode="644"
